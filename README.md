@@ -1,21 +1,8 @@
-Community fork of the KTaNE Modkit.
+Ktane Translation Service
 
-The [original (official) modkit](https://github.com/keeptalkinggame/ktanemodkit) isn't going to receive updates anymore. This is the fork that will be maintained from now on.
+## Build
 
-On this branch, community-made modding features are added to the modkit.
+* Change GameFolder tag in Lib/Lib.csproj
+* Open Lib/Lib.sln in VS 2019 and go to Build>Build Lib
+* Open Unity and Build AssetBundle
 
-A modkit with only the base features can be found on the [base_fatures branch](https://github.com/qkrisi/ktanemodkit/tree/base_features).
-
-[Documentation](https://github.com/Qkrisi/ktanemodkit/wiki)
-
-To get more help, join the [Keep Talking and Nobody Explodes](https://discord.gg/ktane) or the [KTaNE Modding](https://discord.gg/qzy7Gdz) Discord servers.
-
-Community features added:
-```
--Multiple Bombs Mission Editor (By Lupo511)
--DMG Mission Editor (By ZekNikZ)
--KeepCoding (By Emik)
--KTaNE Utilities (By samfundev)
--KTaNE Module Utils (By Qkrisi)
--Custom Assets (By Royal_Flu$h)
-```
