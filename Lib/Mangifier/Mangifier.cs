@@ -1,8 +1,6 @@
-﻿using KeepCoding;
-using System;
-using System.Collections.Generic;
+﻿#nullable enable
+
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace TranslationService
@@ -22,17 +20,6 @@ namespace TranslationService
             public override float GetMagnifier(Vector3 beforeBounds, Vector3 afterBounds, string text)
             {
                 return 1f;
-            }
-        }
-
-        public class MaxSizeMagnifier: Magnifier
-        {
-            Vector3 size;
-            public MaxSizeMagnifier(float x, float y, float z) { size = new Vector3(x, y, z); }
-            public MaxSizeMagnifier(Vector3 size) { this.size = size; }
-            public override float GetMagnifier(Vector3 beforeBounds, Vector3 afterBounds, string text)
-            {
-                return base.GetMagnifier(size, afterBounds, text);
             }
         }
 
@@ -126,9 +113,23 @@ namespace TranslationService
                 }
                 return base.GetMagnifier(v, afterBounds, text);
             }
-
-
         }
+
+        public class VectorMagnifier : Magnifier
+        {
+            Vector3 vec;
+            public VectorMagnifier(Vector3 vec) { this.vec = vec; }
+            public VectorMagnifier(float x, float y, float z) { this.vec = new Vector3(x, y, z); }
+            public override float GetMagnifier(Vector3 b, Vector3 afterBounds, string text)
+            {
+                var x = vec.x < vec.y && vec.x < vec.z ? float.MaxValue : vec.x / afterBounds.x;
+                var y = vec.y < vec.z && vec.y < vec.x ? float.MaxValue : vec.y / afterBounds.y;
+                var z = vec.z < vec.y && vec.z < vec.x ? float.MaxValue : vec.z / afterBounds.z;
+                return new float[] { x, y, z }.Min();
+            }
+        }
+
+
 
         public static Magnifier Default = new Magnifier();
         public static Magnifier Static = new StaticMagnifier();

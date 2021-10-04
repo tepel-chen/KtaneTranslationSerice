@@ -1,10 +1,10 @@
 ﻿
+using HarmonyLib;
 using KeepCoding;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+using System.Linq;
 using UnityEngine;
-using static TranslationService.Magnifier;
 
 namespace TranslationService
 {
@@ -17,31 +17,52 @@ namespace TranslationService
 
         bool needsTranslationUpdate = true;
         KMBombInfo bombInfo;
-        DefaultTranslator translator;
+        Translator translator;
+        SupportAssign assigner;
         KeepCoding.Logger logger;
         Font font;
         Material fontMaterial;
         Settings settings;
+        string currentLangCode;
+        Harmony harmony;
 
         protected void Start()
         {
             bombInfo = GetComponent<KMBombInfo>();
+            harmony = new Harmony("tepel.translationService");
             logger = new KeepCoding.Logger("Translation Service");
+            settings = new ModConfig<Settings>().Read();
+            StartCoroutine(SetLanguageCode());
         }
 
-        private void SetLanguageCode(string code)
+        private IEnumerator SetLanguageCode()
         {
-            font = code switch
+            if (settings.LanguageCodeOverride is string langOverride && langOverride.Length > 0)
+            {
+                if (currentLangCode == langOverride) yield break;
+                logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
+                logger.Log($"Overriding to language: {langOverride}");
+                currentLangCode = langOverride;
+            }
+            else
+            {
+                if (currentLangCode == Game.PlayerSettings.LanguageCode) yield break;
+                logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
+                currentLangCode = Game.PlayerSettings.LanguageCode;
+            }
+            font = currentLangCode switch
             {
                 "ja" => jaFont,
                 _ => null
             };
-            fontMaterial = code switch
+            fontMaterial = currentLangCode switch
             {
                 "ja" => jaFontMaterial,
                 _ => null
             };
-            translator = DefaultTranslator.GetTranslatorFromCode(code, logger, font, fontMaterial, settings);
+            translator = new Translator(logger, font, fontMaterial, settings, currentLangCode);
+            assigner = new SupportAssign(logger, translator, settings, harmony);
+            while (translator.keepWaiting || assigner.keepWaiting) yield return null;
         }
 
         protected void Update()
@@ -50,18 +71,8 @@ namespace TranslationService
             {
                 settings = new ModConfig<Settings>().Read();
 
-
-                logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
-                if (settings.LanguageCodeOverride is string langOverride && langOverride.Length > 0)
-                {
-                    logger.Log($"Overriding to language: {langOverride}");
-                    SetLanguageCode(langOverride);
-                }
-                else
-                {
-                    SetLanguageCode(Game.PlayerSettings.LanguageCode);
-                }
-                if (translator != null) TranslateModules();
+                StartCoroutine(SetLanguageCode());
+                TranslateModules();
                 needsTranslationUpdate = false;
             } else if(!bombInfo.IsBombPresent())
             {
@@ -76,71 +87,9 @@ namespace TranslationService
             logger.Log($"Found: {modules.Length} modules");
             foreach (var module in modules)
             {
-                StartCoroutine(TranslateModule(module));
+                StartCoroutine(assigner.TranslateModule(module));
             }
             
-        }
-
-        private IEnumerator TranslateModule(KMBombModule module)
-        {
-            yield return null;
-            var texts = module.GetComponentsInChildren<TextMesh>();
-            switch (module.ModuleType)
-            {
-                // Custom translator dict
-                case "OrientationCube":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, new OrientationCubeMagnifier());
-                    break;
-                // Adjust magnifier
-                case "GameOfLifeSimple":
-                case "GameOfLifeCruel":
-                case "wackGameOfLife":
-                case "LifeIteration":
-                case "Krit4CardMonte":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, new SizeLimitMagnifier(1.1f, 1.1f));
-                    break;
-                case "AdjacentLettersModule":
-                case "SkewedSlotsModule":
-                case "fastMath":
-                case "algebra":
-                case "TwoBits":
-                case "neutralization":
-                case "MinesweeperModule":
-                case "murder":
-                case "notMurder":
-                case "NonogramModule":
-                case "Backgrounds":
-                case "BlindMaze":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, new HightLimitMagnifier(1.2f));
-                    break;
-                case "Logic":
-                case "symbolicPasswordModule":
-                case "graphModule":
-                case "MazeV2":
-                case "resistors":
-                case "dragonEnergy":
-                case "timezone":
-                case "curriculum":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, new HightLimitMagnifier(1.3f));
-                    break;
-                case "fizzBuzzModule":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, new HightLimitMagnifier(1.5f));
-                    break;
-                case "CheapCheckoutModule":
-                case "cheepCheckout":
-                case "radiator":
-                case "FlagsModule":
-                case "mashematics":
-                case "BitOps":
-                case "PolyhedralMazeModule":
-                case "combinationLock":
-                case "theSwan":
-                    yield return translator.SetTranslationToMeshes(texts, module.ModuleType, Default);
-                    break;
-                default:
-                    if(settings.ApplyToUntestedModule) yield return translator.SetTranslationToMeshes(texts, module.ModuleType, Default);
-                    break;
-            }
         }
 
     }

@@ -1,8 +1,6 @@
 ﻿#nullable enable
 
-using KeepCoding;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace TranslationService { 
     public class Settings

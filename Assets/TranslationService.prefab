@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114197019854468846}
   - component: {fileID: 114834925760006366}
   - component: {fileID: 114069589674833726}
-  - component: {fileID: 114955816258640876}
+  - component: {fileID: 114200178174318310}
   m_Layer: 0
   m_Name: TranslationService
   m_TagString: Untagged
@@ -65,6 +65,19 @@ MonoBehaviour:
   m_Script: {fileID: -271661043, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114200178174318310
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1420900081920390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1408796477, guid: 4f1f06e2f2366d442b28490dda7146f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jaFont: {fileID: 12800000, guid: 5fe85fd0d706fa54798b72bd4a497349, type: 3}
+  jaFontMaterial: {fileID: 2100000, guid: 14047c3414648d54e9205c974b51a826, type: 2}
 --- !u!114 &114834925760006366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,20 +89,3 @@ MonoBehaviour:
   m_Script: {fileID: 2144496390, guid: 45b809be76fd7a3468b6f517bced6f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114955816258640876
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1420900081920390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 358903509, guid: 26c281678c0638a42bcae449e1515cab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jaFont: {fileID: 12800000, guid: 5fe85fd0d706fa54798b72bd4a497349, type: 3}
-  jaFontMaterial: {fileID: 2100000, guid: 14047c3414648d54e9205c974b51a826, type: 2}
-  needsTranslationUpdate: 1
-  bombInfo: {fileID: 0}
-  font: {fileID: 0}
-  fontMaterial: {fileID: 0}

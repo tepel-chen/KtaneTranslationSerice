@@ -2,7 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <ModID Condition="'$(ModID)' == ''">MinorTranslationService</ModID>
+    <ModID Condition="'$(ModID)' == ''">TranslationService</ModID>
     <GameFolder Condition="'$(GameFolder)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Keep Talking and Nobody Explodes\</GameFolder>
     <ProjectGuid>{2804AFE9-E597-4C7C-8C1B-B4EAFF9713BC}</ProjectGuid>
   </PropertyGroup>
@@ -29,6 +29,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>E:\Steam\steamapps\workshop\content\341800\1366808675\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="KeepCoding">
       <HintPath>..\Assets\Plugins\Managed\KeepCoding.dll</HintPath>
     </Reference>
@@ -92,25 +95,40 @@
       <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomMangifier\Mangifier.cs" />
-    <Compile Include="CustomMangifier\OrientationCubeMagnifier.cs" />
+    <Compile Include="Loaders\SupportLoader.cs" />
+    <Compile Include="Mangifier\Mangifier.cs" />
+    <Compile Include="Mangifier\OrientationCubeMagnifier.cs" />
+    <Compile Include="Loaders\DownloadText.cs" />
+    <Compile Include="Loaders\GoogleSheet.cs" />
+    <Compile Include="ModuleTranslators\AdventureGameTranslator.cs" />
+    <Compile Include="ModuleTranslators\ModuleTranslator.cs" />
+    <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="DefaultTranslations\DefaultTranslator.cs" />
-    <Compile Include="DefaultTranslations\FrenchTranslator.cs" />
-    <Compile Include="DefaultTranslations\JapaneseTranslator.cs" />
-    <Compile Include="Easing.cs" />
+    <Compile Include="SupportAssign.cs" />
+    <Compile Include="Translator.cs" />
     <Compile Include="GeneralExtensions.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="KMBombInfoExtensions.cs" />
-    <Compile Include="KMBossModule.cs" />
-    <Compile Include="KMColorblindMode.cs" />
-    <Compile Include="KMRuleSeedable.cs" />
-    <Compile Include="KtaneModule.cs" />
+    <Compile Include="Loaders\TranslationLoader.cs" />
     <Compile Include="TranslationService.cs" />
-    <Compile Include="ModdedAPI.cs" />
-    <Compile Include="ReflectionHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

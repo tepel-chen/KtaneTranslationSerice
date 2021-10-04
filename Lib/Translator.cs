@@ -3,31 +3,46 @@
 using KeepCoding;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
+using TranslationService.Loaders;
 using UnityEngine;
 
 namespace TranslationService
 {
-    public abstract class DefaultTranslator
+    public class Translator : CustomYieldInstruction
     {
-        public abstract Dictionary<string, string> GetDefaultDict();
 
         public ILog logger;
         public Font? font;
         public Material? fontMaterial;
         public Settings settings;
+        public string langCode;
 
-        public DefaultTranslator(ILog logger, Font? font, Material? fontmaterial, Settings settings)
+        private TranslationLoader loader;
+        private Dictionary<string, string>? _dict;
+
+
+        public override bool keepWaiting => loader.keepWaiting;
+
+        public Translator(ILog logger, Font? font, Material? fontMaterial, Settings settings, string langCode)
         {
             this.logger = logger;
             this.font = font;
-            this.fontMaterial = fontmaterial;
+            this.fontMaterial = fontMaterial;
             this.settings = settings;
+            this.langCode = langCode;
+
+            loader = new TranslationLoader(logger);
         }
 
-        public string? GetTranslation(string from, Dictionary<string, string> dict, string moduleName)
+        private Dictionary<string, string>? LoadTranslations()
         {
+            return _dict ??= loader.GetTranslation(langCode);
+        }
+
+        public string? GetTranslation(string from, string moduleName)
+        {
+            if (LoadTranslations() is not Dictionary<string, string> dict) return null;
             var trimmed = from.Trim();
             var lower = trimmed.ToLowerInvariant();
             var upper = trimmed.ToUpperInvariant();
@@ -40,32 +55,23 @@ namespace TranslationService
             return null;
         }
 
-        public IEnumerator SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName)
         {
-            return SetTranslationToMeshes(textmeshes, moduleName, GetDefaultDict(), Magnifier.Default);
+            SetTranslationToMeshes(textmeshes, moduleName, Magnifier.Default);
         }
-        public IEnumerator SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName, Dictionary<string, string> dict)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName, Magnifier magnifier)
         {
-            return SetTranslationToMeshes(textmeshes, moduleName, dict, Magnifier.Default);
-        }
-        public IEnumerator SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName, Magnifier magnifier)
-        {
-            return SetTranslationToMeshes(textmeshes, moduleName, GetDefaultDict(), magnifier);
-        }
-        public IEnumerator SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName, Dictionary<string, string> dict, Magnifier magnifier)
-        {
-            foreach(var textMesh in textmeshes)
+            foreach (var textMesh in textmeshes)
             {
-                yield return SetTranslationToMesh(textMesh, moduleName, dict, magnifier);
+                SetTranslationToMesh(textMesh, moduleName, magnifier);
             }
-            
         }
-        public IEnumerator SetTranslationToMesh(TextMesh textmesh, string moduleName, Dictionary<string, string> dict, Magnifier magnifier)
+        public void SetTranslationToMesh(TextMesh textmesh, string moduleName, Magnifier magnifier)
         {
             MeshRenderer renderer = textmesh.GetComponent<MeshRenderer>();
             Transform transform = textmesh.GetComponent<Transform>();
 
-            if (GetTranslation(textmesh.text, dict, moduleName) is string translated)
+            if (GetTranslation(textmesh.text, moduleName) is string translated)
             {
 
                 // Changing alignment to center
@@ -80,7 +86,6 @@ namespace TranslationService
                     renderer.material = fontMaterial;
                 }
                 textmesh.text = translated;
-                yield return null; // rerender
                 Bounds afterBounds = renderer.bounds;
                 float m = magnifier.GetMagnifier(beforeBounds.size, afterBounds.size, beforeTranslation);
                 if (m > 0.1) transform.localScale *= m;
@@ -91,15 +96,6 @@ namespace TranslationService
             {
                 logger.Log($"[Suggest] Found {textmesh.text} in {moduleName} but translation not found.");
             }
-        }
-        public static DefaultTranslator? GetTranslatorFromCode(string code, ILog logger, Font font, Material fontMaterial, Settings settings)
-        {
-            return code switch
-            {
-                "ja" => new JapaneseTranslator(logger, font, fontMaterial, settings),
-                "fr" => new FrenchTranslator(logger, font, fontMaterial, settings),
-                _ => null,
-            };
         }
     }
 }

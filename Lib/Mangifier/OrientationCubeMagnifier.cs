@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using UnityEngine;
 
 namespace TranslationService
@@ -12,11 +9,13 @@ namespace TranslationService
         {
             switch (text) {
                 case "TOP":
+                    return base.GetMagnifier(new Vector3(0.02f, 0, 0.02f), afterBounds, text);
                 case "RIGHT":
                 case "LEFT":
+                    return base.GetMagnifier(new Vector3(0, 0.02f, 0.02f), afterBounds, text);
                 case "BACK":
                 case "FRONT":
-                    return base.GetMagnifier(new Vector3(0.007f, 0.007f, 0.007f), afterBounds, text);
+                    return base.GetMagnifier(new Vector3(0.02f, 0.02f, 0), afterBounds, text);
                 default:
                     return base.GetMagnifier(beforeBounds, afterBounds, text);
             }
