@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Name: ModConfig
   m_EditorClassIdentifier: 
   id: TranslationService
-  title: Translation Service
+  title: Translation Service (beta)
   author: tepel
-  description: 
-  version: 0.0.0
+  description: "(NOTE: This mod is still in beta. There may be some unexpected behaviors)\nKeep
+    talking and nobody exploads mods are now available with a language of your choice!\n\nTo
+    see which modules are supported, see here \nhttps://docs.google.com/spreadsheets/d/1isY3ScLImQOZ5BfpebYzKvUeCoqh8hjKV33T05flKhM/edit#gid=0\n\nIf
+    any translators would help me translate to even more languages, please contact
+    tepel#5876 in KTaNE discord server"
+  version: 0.0.1
   outputFolder: E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\mods
-  previewImage: {fileID: 0}
+  previewImage: {fileID: 2800000, guid: b1a108056d8e2a3449f4f999db018771, type: 3}

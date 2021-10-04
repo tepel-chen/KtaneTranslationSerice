@@ -30,7 +30,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>E:\Steam\steamapps\workshop\content\341800\1366808675\0Harmony.dll</HintPath>
+      <HintPath>$(GameFolder)..\..\workshop\content\341800\1366808675\0Harmony.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="KeepCoding">
       <HintPath>..\Assets\Plugins\Managed\KeepCoding.dll</HintPath>
@@ -96,19 +97,19 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>E:\Steam\steamapps\common\Keep Talking and Nobody Explodes\ktane_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>$(GameFolder)\ktane_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

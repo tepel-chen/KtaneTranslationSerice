@@ -41,15 +41,15 @@ namespace TranslationService.ModuleTranslators
 
         public static void UpdateStatDisplayPostfix(ref object __instance)
         {
-            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.025f, 0));
+            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
         }
         public static void UpdateInvDisplayPostfix(ref object __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.025f, 0));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
         }
         public static void OnActivatePostfix(ref object __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextEnemy"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.025f, 0));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextEnemy"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
         }
     }
 }
