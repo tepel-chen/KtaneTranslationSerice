@@ -42,6 +42,8 @@ namespace TranslationService
                     ModuleSupportStatus.Default => new OnlyStartModuleTranslator(Default),
                     ModuleSupportStatus.Adjust => new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f)),
                     ModuleSupportStatus.Custom => CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t) ? t(harmony) : null,
+                    ModuleSupportStatus.Partial => settings.ApplyToPartial ? new OnlyStartModuleTranslator(Default) : null,
+                    ModuleSupportStatus.PartialAdjust => settings.ApplyToPartial ? new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f)) : null,
                     _ => settings.ApplyToUntestedModule ? new OnlyStartModuleTranslator(Default) : null,
                 };
                 if(moduleTranslator == null && support.status == ModuleSupportStatus.Custom)

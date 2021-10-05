@@ -11,7 +11,10 @@ namespace TranslationService.Loaders
         Unsupported = -1,
         Default,
         Adjust,
-        Custom
+        Partial,
+        PartialAdjust,
+        Custom,
+        Native
     }
     public class ModuleSupport
     {
@@ -61,7 +64,9 @@ namespace TranslationService.Loaders
                             "Default" => ModuleSupportStatus.Default,
                             "Adjust" => ModuleSupportStatus.Adjust,
                             "Custom" => ModuleSupportStatus.Custom,
-                            _ => ModuleSupportStatus.Default
+                            "Partial" => ModuleSupportStatus.Partial,
+                            "PartialAdjust" => ModuleSupportStatus.PartialAdjust,
+                            _ => ModuleSupportStatus.Unsupported
                         };
                         float? wAdjust = row.TryGetValue("Width adjustment", out string wstr) && float.TryParse(wstr, out float wvalue) ? wvalue : null;
                         float? hAdjust = row.TryGetValue("Height adjustment", out string hstr) && float.TryParse(hstr, out float hvalue) ? hvalue : null;
