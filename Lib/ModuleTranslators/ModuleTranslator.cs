@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using HarmonyLib;
+using System.Collections;
 
 namespace TranslationService.ModuleTranslators
 {

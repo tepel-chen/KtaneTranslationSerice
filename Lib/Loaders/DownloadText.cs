@@ -23,6 +23,7 @@ namespace TranslationService.Loaders
 		public DownloadText(string url, string? backup = null)
 		{
 			request = UnityWebRequest.Get(url);
+			Debug.Log($"Fetching from {request.url}");
 			asyncOperation = request.SendWebRequest();
 
 			if(backup != null)
@@ -49,7 +50,7 @@ namespace TranslationService.Loaders
 				if (!downloadSuccess && retryCount < 5)
 				{
 					retryCount++;
-
+					Debug.Log($"Fetching from {request.url} (Count {retryCount})");
 					request = UnityWebRequest.Get(request.url);
 					asyncOperation = request.SendWebRequest();
 					return true;
@@ -60,8 +61,10 @@ namespace TranslationService.Loaders
 					{
 						lock (settingsFileLock)
 						{
+							Debug.Log($"Failed to fetch from {request.url}, reading backup from {settingsPath}.");
 							if (!File.Exists(settingsPath))
 							{
+								Debug.Log($"Failed to read {settingsPath}");
 								return false;
 							}
 							backupText = File.ReadAllText(settingsPath);
