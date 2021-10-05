@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using KeepCoding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,7 +92,7 @@ namespace TranslationService
                 textmesh.text = translated;
                 Bounds afterBounds = renderer.bounds;
                 Vector2 afterSize = Quaternion.Inverse(transform.rotation) * afterBounds.size;
-                float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation, module);
+                float m = magnifier.GetMagnifier(new Vector2(Math.Abs(beforeSize.x), Math.Abs(beforeSize.y)), new Vector2(Math.Abs(afterSize.x), Math.Abs(afterSize.y)), beforeTranslation, module);
                 if (m > 0.1) transform.localScale *= m;
                 logger.Log($"Found text \"{beforeTranslation}\" in module {moduleName}. Translating to \"{translated}\"");
 

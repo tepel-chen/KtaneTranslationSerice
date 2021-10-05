@@ -52,7 +52,7 @@ namespace TranslationService
                 }
                 if(settings.ApplyToUntestedModule && CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t2))
                 {
-                    moduleTranslator = t2(harmony);
+                    moduleTranslator ??= t2(harmony);
                 }
                 if(moduleTranslator != null)
                 {
