@@ -70,9 +70,8 @@ namespace TranslationService
             if (needsTranslationUpdate && bombInfo.IsBombPresent() && SceneManager.Instance.GameplayState.Bombs.Count > 0)
             {
                 settings = new ModConfig<Settings>().Read();
-
                 StartCoroutine(SetLanguageCode());
-                TranslateModules();
+                StartCoroutine(TranslateModules());
                 needsTranslationUpdate = false;
             } else if(!bombInfo.IsBombPresent())
             {
@@ -80,14 +79,15 @@ namespace TranslationService
             }
         }
 
-        private void TranslateModules()
+        private IEnumerator TranslateModules()
         {
+            yield return assigner;
             logger.Log("Start translating modules");
             var modules = SceneManager.Instance.GameplayState.Bombs[0].GetComponentsInChildren<KMBombModule>();
             logger.Log($"Found: {modules.Length} modules");
             foreach (var module in modules)
             {
-                StartCoroutine(assigner.TranslateModule(module));
+                assigner.TranslateModule(module);
             }
             
         }

@@ -23,17 +23,11 @@ namespace TranslationService.ModuleTranslators
 
         private static readonly Type componentType = ReflectionHelper.FindType("AdventureGameModule");
 
-        public override IEnumerator StartTranslation(KMBombModule module, Translator translator)
+        public override void StartTranslation(KMBombModule module, Translator translator)
         {
-            yield return translator;
             AdventureGameTranslator.translator = translator;
             var texts = module.GetComponentsInChildren<TextMesh>();
             translator.SetTranslationToMeshes(texts, module.ModuleDisplayName, Magnifier.Default);
-            while(true)
-            {
-                Debug.Log(module.GetComponent(componentType).GetValue<TextMesh>("TextStatus").GetComponent<MeshRenderer>().bounds.size.ToString("F6"));
-                yield return new WaitForSecondsRealtime(1f);
-            }
 
         }
 
@@ -41,15 +35,15 @@ namespace TranslationService.ModuleTranslators
 
         public static void UpdateStatDisplayPostfix(ref object __instance)
         {
-            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
+            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
         public static void UpdateInvDisplayPostfix(ref object __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
         public static void OnActivatePostfix(ref object __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextEnemy"), "Adventure Game", new Magnifier.VectorMagnifier(0.075f, 0.018f, 0));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextEnemy"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
     }
 }

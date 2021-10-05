@@ -4,6 +4,6 @@ namespace TranslationService.ModuleTranslators
 {
     abstract class ModuleTranslator
     {
-        public abstract IEnumerator StartTranslation(KMBombModule module, Translator translator);
+        public abstract void StartTranslation(KMBombModule module, Translator translator);
     }
 }

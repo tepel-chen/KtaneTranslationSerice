@@ -3,6 +3,7 @@
 using KeepCoding;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TranslationService.Loaders;
 using UnityEngine;
@@ -76,6 +77,7 @@ namespace TranslationService
 
                 // Changing alignment to center
                 Bounds beforeBounds = renderer.bounds;
+                Vector2 beforeSize = Quaternion.Inverse(transform.rotation) * beforeBounds.size;
                 textmesh.anchor = TextAnchor.MiddleCenter;
                 transform.position = beforeBounds.center;
 
@@ -87,7 +89,8 @@ namespace TranslationService
                 }
                 textmesh.text = translated;
                 Bounds afterBounds = renderer.bounds;
-                float m = magnifier.GetMagnifier(beforeBounds.size, afterBounds.size, beforeTranslation);
+                Vector2 afterSize = Quaternion.Inverse(transform.rotation) * afterBounds.size;
+                float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation);
                 if (m > 0.1) transform.localScale *= m;
                 logger.Log($"Found text \"{beforeTranslation}\" in module {moduleName}. Translating to \"{translated}\"");
 

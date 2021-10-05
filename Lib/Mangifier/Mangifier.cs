@@ -7,63 +7,16 @@ namespace TranslationService
 {
     public class Magnifier
     {
-        public virtual float GetMagnifier(Vector3 beforeBounds, Vector3 afterBounds, string text)
+        public virtual float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text)
         {
-            var x = beforeBounds.x < beforeBounds.y && beforeBounds.x < beforeBounds.z ? 1 : beforeBounds.x / afterBounds.x;
-            var y = beforeBounds.y < beforeBounds.z && beforeBounds.y < beforeBounds.x ? 1 : beforeBounds.y / afterBounds.y;
-            var z = beforeBounds.z < beforeBounds.y && beforeBounds.z < beforeBounds.x ? 1 : beforeBounds.z / afterBounds.z;
-            return new float[] { x, y, z }.Min();
+            return new float[] { beforeBounds.x / afterBounds.x, beforeBounds.y / afterBounds.y, 1 }.Min();
         }
 
         public class StaticMagnifier: Magnifier
         {
-            public override float GetMagnifier(Vector3 beforeBounds, Vector3 afterBounds, string text)
+            public override float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text)
             {
                 return 1f;
-            }
-        }
-
-        public class HightLimitMagnifier: Magnifier
-        {
-            float maxHeight;
-            public HightLimitMagnifier(float maxHeight) { this.maxHeight = maxHeight; }
-            public override float GetMagnifier(Vector3 b, Vector3 afterBounds, string text)
-            {
-                Vector3 v;
-                if((b.x < b.y && b.x > b.z) || (b.x < b.z && b.x > b.y))
-                {
-                    v = new Vector3(b.x * maxHeight, b.y, b.z);
-                } else if((b.y < b.x && b.y > b.z) || (b.y < b.z && b.y > b.x))
-                {
-                    v = new Vector3(b.x, b.y * maxHeight, b.z);
-                } else
-                {
-                    v = new Vector3(b.x, b.y, b.z * maxHeight);
-                }
-                return base.GetMagnifier(v, afterBounds, text);
-            }
-        }
-
-        public class WidthLimitMagnifier: Magnifier
-        {
-            float maxWidth;
-            public WidthLimitMagnifier(float maxWidth) { this.maxWidth = maxWidth; }
-            public override float GetMagnifier(Vector3 b, Vector3 afterBounds, string text)
-            {
-                Vector3 v;
-                if (b.x > b.y && b.x > b.z)
-                {
-                    v = new Vector3(b.x * maxWidth, b.y, b.z);
-                }
-                else if (b.y > b.x && b.y > b.z)
-                {
-                    v = new Vector3(b.x, b.y * maxWidth, b.z);
-                }
-                else
-                {
-                    v = new Vector3(b.x, b.y, b.z * maxWidth);
-                }
-                return base.GetMagnifier(v, afterBounds, text);
             }
         }
 
@@ -76,56 +29,20 @@ namespace TranslationService
                 this.maxHeight = maxHeight;
             }
 
-            public override float GetMagnifier(Vector3 b, Vector3 afterBounds, string text)
+            public override float GetMagnifier(Vector2 b, Vector2 afterBounds, string text)
             {
-                Vector3 v;
-                if (b.x > b.y && b.x > b.z)
-                {
-                    if(b.y > b.z)
-                    {
-                        v = new Vector3(b.x * maxWidth, b.y * maxHeight, b.z);
-                    } else
-                    {
-                        v = new Vector3(b.x * maxWidth, b.y , b.z * maxHeight);
-                    }
-                }
-                else if (b.y > b.x && b.y > b.z)
-                {
-                    if (b.x > b.z)
-                    {
-                        v = new Vector3(b.x * maxHeight, b.y * maxWidth, b.z);
-                    }
-                    else
-                    {
-                        v = new Vector3(b.x, b.y * maxWidth, b.z * maxHeight);
-                    }
-                }
-                else
-                {
-                    if (b.x > b.y)
-                    {
-                        v = new Vector3(b.x * maxHeight, b.y, b.z * maxWidth);
-                    }
-                    else
-                    {
-                        v = new Vector3(b.x, b.y * maxHeight, b.z * maxWidth);
-                    }
-                }
-                return base.GetMagnifier(v, afterBounds, text);
+                return base.GetMagnifier(new Vector2(b.x * maxWidth, b.y * maxHeight), afterBounds, text);
             }
         }
 
         public class VectorMagnifier : Magnifier
         {
             Vector3 vec;
-            public VectorMagnifier(Vector3 vec) { this.vec = vec; }
-            public VectorMagnifier(float x, float y, float z) { this.vec = new Vector3(x, y, z); }
-            public override float GetMagnifier(Vector3 b, Vector3 afterBounds, string text)
+            public VectorMagnifier(Vector2 vec) { this.vec = vec; }
+            public VectorMagnifier(float x, float y) { vec = new Vector2(x, y); }
+            public override float GetMagnifier(Vector2 _, Vector2 afterBounds, string text)
             {
-                var x = vec.x < vec.y && vec.x < vec.z ? float.MaxValue : vec.x / afterBounds.x;
-                var y = vec.y < vec.z && vec.y < vec.x ? float.MaxValue : vec.y / afterBounds.y;
-                var z = vec.z < vec.y && vec.z < vec.x ? float.MaxValue : vec.z / afterBounds.z;
-                return new float[] { x, y, z }.Min();
+                return new float[] { vec.x / afterBounds.x, vec.y / afterBounds.y }.Min();
             }
         }
 

@@ -31,11 +31,8 @@ namespace TranslationService
 
         public override bool keepWaiting => loader.keepWaiting;
 
-        public IEnumerator TranslateModule(KMBombModule module)
+        public void TranslateModule(KMBombModule module)
         {
-            yield return loader;
-            yield return translator;
-
             var support = loader.GetSupport(module.ModuleDisplayName);
             if (support != null)
             {
@@ -54,11 +51,7 @@ namespace TranslationService
                 if(moduleTranslator != null)
                 {
                     if(!moduleTranslatorCache.ContainsKey(module.ModuleDisplayName)) moduleTranslatorCache.Add(module.ModuleDisplayName, moduleTranslator);
-                    IEnumerator coroutine = moduleTranslator.StartTranslation(module, translator);
-                    while (coroutine.MoveNext())
-                    {
-                        yield return coroutine.Current;
-                    }
+                    moduleTranslator.StartTranslation(module, translator);
                 }
             }
         }
