@@ -65,7 +65,7 @@ namespace TranslationService.Loaders
                             "Adjust" => ModuleSupportStatus.Adjust,
                             "Custom" => ModuleSupportStatus.Custom,
                             "Partial" => ModuleSupportStatus.Partial,
-                            "PartialAdjust" => ModuleSupportStatus.PartialAdjust,
+                            "Partial Adjust" => ModuleSupportStatus.PartialAdjust,
                             _ => ModuleSupportStatus.Unsupported
                         };
                         float? wAdjust = row.TryGetValue("Width adjustment", out string wstr) && float.TryParse(wstr, out float wvalue) ? wvalue : null;
