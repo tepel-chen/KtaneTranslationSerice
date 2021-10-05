@@ -68,7 +68,6 @@ namespace TranslationService
         {
             if (isSetting) yield break;
             isSetting = true;
-            Time.timeScale = 0;
             var settings = new ModConfig<Settings>().Read();
             if (settings.LanguageCodeOverride is string langOverride && langOverride.Length > 0)
             {
@@ -98,7 +97,6 @@ namespace TranslationService
             yield return translator;
             yield return Patcher.assigner;
             isSetting = false;
-            Time.timeScale = 1;
         }
 
         public static void Postfix(string path, string contents)
