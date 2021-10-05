@@ -50,11 +50,17 @@ namespace TranslationService
                 {
                     logger.Log($"Module {module.ModuleDisplayName} is labeled custom, but custom translator not found");
                 }
+                if(settings.ApplyToUntestedModule && CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t2))
+                {
+                    moduleTranslator = t2(harmony);
+                }
                 if(moduleTranslator != null)
                 {
-                    if(!moduleTranslatorCache.ContainsKey(module.ModuleDisplayName)) moduleTranslatorCache.Add(module.ModuleDisplayName, moduleTranslator);
+                    logger.Log($"Module {module.ModuleDisplayName} is labeled {support.status}, applying translation.");
+                    if (!moduleTranslatorCache.ContainsKey(module.ModuleDisplayName)) moduleTranslatorCache.Add(module.ModuleDisplayName, moduleTranslator);
                     moduleTranslator.StartTranslation(module, translator);
-                }
+                } else 
+                    logger.Log($"Module {module.ModuleDisplayName} is labeled {support.status}, ignoring.");
             }
         }
 
