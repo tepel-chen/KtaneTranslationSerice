@@ -56,21 +56,22 @@ namespace TranslationService
             return null;
         }
 
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module)
         {
-            SetTranslationToMeshes(textmeshes, moduleName, Magnifier.Default);
+            SetTranslationToMeshes(textmeshes, module, Magnifier.Default);
         }
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, string moduleName, Magnifier magnifier)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Magnifier magnifier)
         {
             foreach (var textMesh in textmeshes)
             {
-                SetTranslationToMesh(textMesh, moduleName, magnifier);
+                SetTranslationToMesh(textMesh, module, magnifier);
             }
         }
-        public void SetTranslationToMesh(TextMesh textmesh, string moduleName, Magnifier magnifier)
+        public void SetTranslationToMesh(TextMesh textmesh, KMBombModule module, Magnifier magnifier)
         {
             MeshRenderer renderer = textmesh.GetComponent<MeshRenderer>();
             Transform transform = textmesh.GetComponent<Transform>();
+            string moduleName = module.ModuleDisplayName;
 
             if (GetTranslation(textmesh.text, moduleName) is string translated)
             {
@@ -90,7 +91,7 @@ namespace TranslationService
                 textmesh.text = translated;
                 Bounds afterBounds = renderer.bounds;
                 Vector2 afterSize = Quaternion.Inverse(transform.rotation) * afterBounds.size;
-                float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation);
+                float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation, module);
                 if (m > 0.1) transform.localScale *= m;
                 logger.Log($"Found text \"{beforeTranslation}\" in module {moduleName}. Translating to \"{translated}\"");
 

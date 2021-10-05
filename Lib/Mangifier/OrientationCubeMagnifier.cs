@@ -5,7 +5,8 @@ namespace TranslationService
 {
     public class OrientationCubeMagnifier: Magnifier
     {
-        public override float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text)
+        private static Magnifier vmag = new VectorMagnifier(0.02f, 0.02f);
+        public override float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text, KMBombModule module)
         {
             switch (text) {
                 case "TOP":
@@ -13,9 +14,9 @@ namespace TranslationService
                 case "LEFT":
                 case "BACK":
                 case "FRONT":
-                    return base.GetMagnifier(new Vector2(0.02f, 0.02f), afterBounds, text);
+                    return vmag.GetMagnifier(beforeBounds, afterBounds, text, module);
                 default:
-                    return base.GetMagnifier(beforeBounds, afterBounds, text);
+                    return base.GetMagnifier(beforeBounds, afterBounds, text, module);
             }
 
         }

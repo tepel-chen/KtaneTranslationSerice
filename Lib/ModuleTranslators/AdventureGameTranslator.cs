@@ -24,7 +24,7 @@ namespace TranslationService.ModuleTranslators
         {
             AdventureGameTranslator.translator = translator;
             var texts = module.GetComponentsInChildren<TextMesh>();
-            translator.SetTranslationToMeshes(texts, module.ModuleDisplayName, Magnifier.Default);
+            translator.SetTranslationToMeshes(texts, module, Magnifier.Default);
 
         }
 
@@ -32,11 +32,11 @@ namespace TranslationService.ModuleTranslators
 
         public static void UpdateStatDisplayPostfix(object __instance)
         {
-            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.016176f, ((MonoBehaviour)__instance).GetComponent<BombComponent>().Bomb.Scale));
+            if(translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), (KMBombModule)__instance, new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
         public static void UpdateInvDisplayPostfix(object __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), "Adventure Game", new Magnifier.VectorMagnifier(0.07f, 0.016176f, ((MonoBehaviour)__instance).GetComponent<BombComponent>().Bomb.Scale));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), (KMBombModule)__instance, new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
     }
 }

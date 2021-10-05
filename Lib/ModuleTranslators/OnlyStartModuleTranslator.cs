@@ -17,7 +17,7 @@ namespace TranslationService.ModuleTranslators
         public override void StartTranslation(KMBombModule module, Translator translator)
         {
             var texts = module.GetComponentsInChildren<TextMesh>();
-            translator.SetTranslationToMeshes(texts, module.ModuleDisplayName, magnifier);
+            translator.SetTranslationToMeshes(texts, module, magnifier);
         }
     }
 }

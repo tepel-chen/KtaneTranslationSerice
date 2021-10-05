@@ -7,14 +7,14 @@ namespace TranslationService
 {
     public class Magnifier
     {
-        public virtual float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text)
+        public virtual float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text, KMBombModule module)
         {
             return new float[] { beforeBounds.x / afterBounds.x, beforeBounds.y / afterBounds.y, 1 }.Min();
         }
 
         public class StaticMagnifier: Magnifier
         {
-            public override float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text)
+            public override float GetMagnifier(Vector2 beforeBounds, Vector2 afterBounds, string text, KMBombModule module)
             {
                 return 1f;
             }
@@ -29,9 +29,9 @@ namespace TranslationService
                 this.maxHeight = maxHeight;
             }
 
-            public override float GetMagnifier(Vector2 b, Vector2 afterBounds, string text)
+            public override float GetMagnifier(Vector2 b, Vector2 afterBounds, string text, KMBombModule module)
             {
-                return base.GetMagnifier(new Vector2(b.x * maxWidth, b.y * maxHeight), afterBounds, text);
+                return base.GetMagnifier(new Vector2(b.x * maxWidth, b.y * maxHeight), afterBounds, text, module);
             }
         }
 
@@ -40,9 +40,10 @@ namespace TranslationService
             Vector3 vec;
             public VectorMagnifier(Vector2 vec) { this.vec = vec; }
             public VectorMagnifier(float x, float y) { vec = new Vector2(x, y); }
-            public override float GetMagnifier(Vector2 _, Vector2 afterBounds, string text)
+            public override float GetMagnifier(Vector2 _, Vector2 afterBounds, string text, KMBombModule module)
             {
-                return new float[] { vec.x / afterBounds.x, vec.y / afterBounds.y }.Min();
+                var svec = vec * module.GetComponent<BombComponent>().Bomb.Scale;
+                return new float[] { svec.x / afterBounds.x, svec.y / afterBounds.y }.Min();
             }
         }
 
