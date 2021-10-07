@@ -76,8 +76,18 @@ MonoBehaviour:
   m_Script: {fileID: -1408796477, guid: 4f1f06e2f2366d442b28490dda7146f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jaFont: {fileID: 12800000, guid: 5fe85fd0d706fa54798b72bd4a497349, type: 3}
-  jaFontMaterial: {fileID: 2100000, guid: 14047c3414648d54e9205c974b51a826, type: 2}
+  fontLang:
+  - ja
+  - zh-CN
+  - zh-TW
+  fontFont:
+  - {fileID: 12800000, guid: 5fe85fd0d706fa54798b72bd4a497349, type: 3}
+  - {fileID: 12800000, guid: b091ed78024c3904e84e83b3f2fa84aa, type: 3}
+  - {fileID: 12800000, guid: b091ed78024c3904e84e83b3f2fa84aa, type: 3}
+  fontMaterial:
+  - {fileID: 2100000, guid: 14047c3414648d54e9205c974b51a826, type: 2}
+  - {fileID: 2100000, guid: e08e061f7405b0c489409e2baf51bb64, type: 2}
+  - {fileID: 2100000, guid: e08e061f7405b0c489409e2baf51bb64, type: 2}
 --- !u!114 &114834925760006366
 MonoBehaviour:
   m_ObjectHideFlags: 1

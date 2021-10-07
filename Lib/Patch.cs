@@ -82,16 +82,8 @@ namespace TranslationService
                 logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
                 currentLangCode = Game.PlayerSettings.LanguageCode;
             }
-            var font = currentLangCode switch
-            {
-                "ja" => Patcher.service.jaFont,
-                _ => null
-            };
-            var fontMaterial = currentLangCode switch
-            {
-                "ja" => Patcher.service.jaFontMaterial,
-                _ => null
-            };
+            var font = Patcher.service.fonts.TryGetValue(currentLangCode, out Font fontRes) ? fontRes : null;
+            var fontMaterial = Patcher.service.fontMaterials.TryGetValue(currentLangCode, out Material matRes) ? matRes : null;
             var translator = new Translator(logger, font, fontMaterial, settings, currentLangCode);
             Patcher.assigner = new SupportAssign(logger, translator, settings, Patcher.harmony);
             yield return translator;
