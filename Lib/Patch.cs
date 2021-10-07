@@ -71,14 +71,12 @@ namespace TranslationService
             var settings = new ModConfig<Settings>().Read();
             if (settings.LanguageCodeOverride is string langOverride && langOverride.Length > 0)
             {
-                if (currentLangCode == langOverride) yield break;
                 logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
                 logger.Log($"Overriding to language: {langOverride}");
                 currentLangCode = langOverride;
             }
             else
             {
-                if (currentLangCode == Game.PlayerSettings.LanguageCode) yield break;
                 logger.Log($"Current language: {Game.PlayerSettings.LanguageCode}");
                 currentLangCode = Game.PlayerSettings.LanguageCode;
             }
@@ -95,7 +93,8 @@ namespace TranslationService
         {
             if (path == Path.Combine(Path.Combine(Application.persistentDataPath, "Modsettings"), "TranslationService-settings.json"))
             {
-                Patcher.service.StartCoroutine(SetLanguageCode());
+                var gen = SetLanguageCode();
+                while (gen.MoveNext()) { }
             }
         }
     }

@@ -27,8 +27,6 @@ namespace TranslationService
             Patcher.Patch();
             Patcher.service = this;
             StartCoroutine(FileWritePatch.SetLanguageCode());
-
-            Debug.Log(string.Join("\n", I2.Loc.LocalizationManager.GetTermsList().Select(i => i.ToString()).ToArray()));
         }
         
     }
