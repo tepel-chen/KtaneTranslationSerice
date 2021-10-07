@@ -63,10 +63,10 @@ namespace TranslationService
     {
         private static string currentLangCode;
         private static bool isSetting = false;
-        private static readonly KeepCoding.Logger logger = new KeepCoding.Logger("Translation Service");
         internal static IEnumerator SetLanguageCode()
         {
             if (isSetting) yield break;
+            var logger = Patcher.service.logger;
             isSetting = true;
             var settings = new ModConfig<Settings>().Read();
             if (settings.LanguageCodeOverride is string langOverride && langOverride.Length > 0)
