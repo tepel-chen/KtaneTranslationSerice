@@ -67,7 +67,8 @@ namespace TranslationService
 
         public readonly static Dictionary<string, Func<Harmony, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, ModuleTranslator>>() {
             {"Orientation Cube", harmony => new OnlyStartModuleTranslator(new OrientationCubeMagnifier()) },
-            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) }
+            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) },
+            {"Murder", harmony => new MurderTranslator(harmony) }
         };
     }
 }
