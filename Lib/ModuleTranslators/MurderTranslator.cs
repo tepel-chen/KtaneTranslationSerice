@@ -12,12 +12,16 @@ namespace TranslationService.ModuleTranslators
         private readonly MethodInfo mUpdateDisplayPostfix;
         public MurderTranslator(Harmony harmony)
         {
+            if (isPatched) return;
+            isPatched = true;
             mUpdateDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateDisplayPostfix(__instance));
             harmony.Patch(AccessTools.Method(componentType, "ChangeDisplay"), null, new HarmonyMethod(mUpdateDisplayPostfix));
             harmony.Patch(AccessTools.Method(componentType, "ActivateModule"), null, new HarmonyMethod(mUpdateDisplayPostfix));
         }
 
         private static readonly Type componentType = ReflectionHelper.FindType("MurderModule");
+        private static bool isPatched = false;
+        private static Magnifier displayMagnifier(string langCode) => langCode == "ja" ? new Magnifier.VectorMagnifier(0.1f, 0.02f) : new Magnifier.VectorMagnifier(0.1f, 0.012132f);
 
         public override void StartTranslation(KMBombModule module, Translator translator)
         {
@@ -31,7 +35,7 @@ namespace TranslationService.ModuleTranslators
 
         public static void UpdateDisplayPostfix(MonoBehaviour __instance)
         {
-            if (translator != null) translator.SetTranslationToMeshes(__instance.GetValue<TextMesh[]>("Display"), __instance.GetComponent<KMBombModule>(), new Magnifier.VectorMagnifier(0.1f, 0.012132f));
+            if (translator != null) translator.SetTranslationToMeshes(__instance.GetValue<TextMesh[]>("Display"), __instance.GetComponent<KMBombModule>(), displayMagnifier(translator.langCode));
         }
     }
 }

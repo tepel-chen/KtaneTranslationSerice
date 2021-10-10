@@ -13,6 +13,8 @@ namespace TranslationService.ModuleTranslators
         private readonly MethodInfo mUpdateInvDisplayPostfix;
         public AdventureGameTranslator(Harmony harmony)
         {
+            if (isPatched) return;
+            isPatched = true;
             mUpdateStatDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateStatDisplayPostfix(__instance));
             mUpdateInvDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateInvDisplayPostfix(__instance));
             harmony.Patch(AccessTools.Method(componentType, "UpdateStatDisplay"), null, new HarmonyMethod(mUpdateStatDisplayPostfix));
@@ -20,6 +22,8 @@ namespace TranslationService.ModuleTranslators
         }
 
         private static readonly Type componentType = ReflectionHelper.FindType("AdventureGameModule");
+        private static bool isPatched = false;
+        private static Magnifier displayMagnifier(string langCode) => langCode == "ja" ? new Magnifier.VectorMagnifier(0.07f, 0.025f) : new Magnifier.VectorMagnifier(0.07f, 0.016176f) ;
 
         public override void StartTranslation(KMBombModule module, Translator translator)
         {
@@ -32,18 +36,21 @@ namespace TranslationService.ModuleTranslators
         public override void AwakeTranslation(KMBombModule module, Translator translator)
         {
             var texts = module.GetComponentsInChildren<TextMesh>().Where(text => text.text != "USE").ToArray();
-            translator.SetTranslationToMeshes(texts, module, new Magnifier.VectorMagnifier(0.07f, 0.016176f));
+            translator.SetTranslationToMeshes(texts, module, displayMagnifier(translator.langCode));
         }
 
         public static Translator translator = null;
 
         public static void UpdateStatDisplayPostfix(MonoBehaviour __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), __instance.GetComponent<KMBombModule>(), new Magnifier.VectorMagnifier(0.07f, 0.016176f));
+            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextStatus"), __instance.GetComponent<KMBombModule>(), displayMagnifier(translator.langCode));
         }
         public static void UpdateInvDisplayPostfix(MonoBehaviour __instance)
         {
-            if (translator != null) translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), __instance.GetComponent<KMBombModule>(), new Magnifier.VectorMagnifier(0.07f, 0.016176f));
+            if (translator != null)
+            {
+                translator.SetTranslationToMesh(__instance.GetValue<TextMesh>("TextInventory"), __instance.GetComponent<KMBombModule>(), displayMagnifier(translator.langCode));
+            }
         }
     }
 }
