@@ -129,10 +129,11 @@
     <Compile Include="Loaders\DownloadText.cs" />
     <Compile Include="Loaders\GoogleSheet.cs" />
     <Compile Include="ModuleTranslators\AdventureGameTranslator.cs" />
+    <Compile Include="ModuleTranslators\ComplicatedButtonTranslator.cs" />
     <Compile Include="ModuleTranslators\IdentityParadeTranslator.cs" />
     <Compile Include="ModuleTranslators\ModuleTranslator.cs" />
-    <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\MurderTranslator.cs" />
+    <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="PropertiesBehaviour.cs" />
     <Compile Include="ReflectionHelper.cs" />

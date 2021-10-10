@@ -71,10 +71,11 @@ namespace TranslationService
 
 
         private readonly static Dictionary<string, Func<Harmony, List<string>?, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, List<string>?,ModuleTranslator>>() {
-            {"Orientation Cube", (harmony, _) => new OnlyStartModuleTranslator(new OrientationCubeMagnifier(), new List<string>()) },
             {"Adventure Game", (harmony, _) => new AdventureGameTranslator(harmony) },
+            {"Complicated Buttons", (harmony, _) => new ComplicatedButtonTranslator(harmony) },
+            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) },
             {"Murder", (harmony, _) => new MurderTranslator(harmony) },
-            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) }
+            {"Orientation Cube", (harmony, _) => new OnlyStartModuleTranslator(new OrientationCubeMagnifier(), new List<string>()) }
         };
     }
 }
