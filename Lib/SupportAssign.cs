@@ -31,7 +31,7 @@ namespace TranslationService
 
         public override bool keepWaiting => loader.keepWaiting;
 
-        public void TranslateModule(KMBombModule module)
+        public void TranslateModule(KMBombModule module, bool isAwake = false)
         {
             var support = loader.GetSupport(module.ModuleDisplayName);
             if (support != null)
@@ -58,7 +58,10 @@ namespace TranslationService
                 {
                     logger.Log($"Module {module.ModuleDisplayName} is labeled {support.status}, applying translation.");
                     if (!moduleTranslatorCache.ContainsKey(module.ModuleDisplayName)) moduleTranslatorCache.Add(module.ModuleDisplayName, moduleTranslator);
-                    moduleTranslator.StartTranslation(module, translator);
+                    if(isAwake) 
+                        moduleTranslator.AwakeTranslation(module, translator);
+                    else
+                        moduleTranslator.StartTranslation(module, translator);
                 } else 
                     logger.Log($"Module {module.ModuleDisplayName} is labeled {support.status}, ignoring.");
             }

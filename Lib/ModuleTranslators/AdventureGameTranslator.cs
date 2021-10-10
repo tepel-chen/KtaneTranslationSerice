@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using HarmonyLib;
 using System.Reflection;
+using System.Linq;
 
 namespace TranslationService.ModuleTranslators
 {
@@ -23,9 +24,15 @@ namespace TranslationService.ModuleTranslators
         public override void StartTranslation(KMBombModule module, Translator translator)
         {
             AdventureGameTranslator.translator = translator;
-            var texts = module.GetComponentsInChildren<TextMesh>();
-            translator.SetTranslationToMeshes(texts, module, Magnifier.Default);
+            var text = module.GetComponentsInChildren<TextMesh>().First(text => text.text == "USE");
+            translator.SetTranslationToMesh(text, module, Magnifier.Default);
 
+        }
+
+        public override void AwakeTranslation(KMBombModule module, Translator translator)
+        {
+            var texts = module.GetComponentsInChildren<TextMesh>().Where(text => text.text != "USE").ToArray();
+            translator.SetTranslationToMeshes(texts, module, new Magnifier.VectorMagnifier(0.07f, 0.016176f));
         }
 
         public static Translator translator = null;

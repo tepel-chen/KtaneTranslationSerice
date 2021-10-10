@@ -14,6 +14,7 @@ namespace TranslationService.ModuleTranslators
         {
             mUpdateDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateDisplayPostfix(__instance));
             harmony.Patch(AccessTools.Method(componentType, "ChangeDisplay"), null, new HarmonyMethod(mUpdateDisplayPostfix));
+            harmony.Patch(AccessTools.Method(componentType, "ActivateModule"), null, new HarmonyMethod(mUpdateDisplayPostfix));
         }
 
         private static readonly Type componentType = ReflectionHelper.FindType("MurderModule");
@@ -22,8 +23,7 @@ namespace TranslationService.ModuleTranslators
         {
             MurderTranslator.translator = translator;
             var texts = module.GetComponentsInChildren<TextMesh>();
-            translator.SetTranslationToMeshes(texts.Where(text => text.text == "ACCUSE").ToArray(), module, Magnifier.Default);
-            translator.SetTranslationToMeshes(texts.Where(text => text.text != "ACCUSE").ToArray(), module, new Magnifier.VectorMagnifier(0.1f, 0.012132f));
+            translator.SetTranslationToMesh(texts.First(text => text.text == "ACCUSE"), module, Magnifier.Default);
 
         }
 

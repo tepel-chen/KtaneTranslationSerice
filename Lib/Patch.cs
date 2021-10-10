@@ -52,9 +52,26 @@ namespace TranslationService
     [HarmonyPatch(typeof(BombComponent), "Activate")]
     public class ActivatePatch
     {
+        public static IEnumerator AwakeTranslation(BombComponent __instance)
+        {
+            if (__instance.ComponentType == Assets.Scripts.Missions.ComponentTypeEnum.Mod && Patcher.assigner != null)
+            {
+                yield return Patcher.assigner;
+                KMBombModule module = __instance.GetComponentInChildren<KMBombModule>();
+                if (module == null)
+                {
+                    Debug.Log("[Translator Service] Module not found. Please send a bug report to tepel#5876");
+                }
+                Patcher.assigner.TranslateModule(module, true);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
         public static void Postfix(BombComponent __instance)
         {
-            __instance.StartCoroutine(StartPatch.StartTranslation(__instance));
+            __instance.StartCoroutine(AwakeTranslation(__instance));
         }
     }
 

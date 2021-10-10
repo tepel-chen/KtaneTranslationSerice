@@ -78,10 +78,12 @@ namespace TranslationService
             {
 
                 // Changing alignment to center
-                Bounds beforeBounds = renderer.bounds;
-                Vector2 beforeSize = Quaternion.Inverse(transform.rotation) * beforeBounds.size;
                 textmesh.anchor = TextAnchor.MiddleCenter;
-                transform.position = beforeBounds.center;
+                transform.position = renderer.bounds.center;
+
+                var rotation = transform.rotation;
+                transform.rotation = Quaternion.identity;
+                Vector2 beforeSize = renderer.bounds.size;
 
                 string beforeTranslation = textmesh.text;
                 if (font != null && fontMaterial != null)
@@ -90,11 +92,14 @@ namespace TranslationService
                     renderer.material = fontMaterial;
                 }
                 textmesh.text = translated;
-                Bounds afterBounds = renderer.bounds;
-                Vector2 afterSize = Quaternion.Inverse(transform.rotation) * afterBounds.size;
-                float m = magnifier.GetMagnifier(new Vector2(Math.Abs(beforeSize.x), Math.Abs(beforeSize.y)), new Vector2(Math.Abs(afterSize.x), Math.Abs(afterSize.y)), beforeTranslation, module);
-                if (m > 0.1) transform.localScale *= m;
+
+                Vector2 afterSize = renderer.bounds.size;
+                float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation, module);
+                transform.localScale *= m;
+                logger.Log((afterSize * 1/module.GetComponent<BombComponent>().Bomb.Scale).ToString("F6"));
                 logger.Log($"Found text \"{beforeTranslation}\" in module {moduleName}. Translating to \"{translated}\"");
+
+                transform.rotation = rotation;
 
             }
             else if (settings.EnableSuggestionLog && new Regex(@"^[A-Za-z]{2,}$").IsMatch(textmesh.text))
