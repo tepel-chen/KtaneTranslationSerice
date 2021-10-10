@@ -52,7 +52,7 @@ namespace TranslationService
                 }
                 if(settings.ApplyToUntestedModule && CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t2))
                 {
-                    moduleTranslator ??= t2(harmony);
+                    moduleTranslator = t2(harmony);
                 }
                 if(moduleTranslator != null)
                 {
@@ -67,7 +67,8 @@ namespace TranslationService
 
         public readonly static Dictionary<string, Func<Harmony, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, ModuleTranslator>>() {
             {"Orientation Cube", harmony => new OnlyStartModuleTranslator(new OrientationCubeMagnifier()) },
-            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) }
+            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) },
+            {"Murder", harmony => new MurderTranslator(harmony) }
         };
     }
 }
