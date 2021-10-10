@@ -12,7 +12,7 @@ namespace TranslationService.ModuleTranslators
         private readonly MethodInfo mUpdateDisplayPostfix;
         public MurderTranslator(Harmony harmony)
         {
-            if (isPatched) return;
+            if (isPatched || componentType == null) return;
             isPatched = true;
             mUpdateDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateDisplayPostfix(__instance));
             harmony.Patch(AccessTools.Method(componentType, "ChangeDisplay"), null, new HarmonyMethod(mUpdateDisplayPostfix));

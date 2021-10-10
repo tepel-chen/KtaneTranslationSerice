@@ -13,7 +13,7 @@ namespace TranslationService.ModuleTranslators
         private readonly MethodInfo mUpdateInvDisplayPostfix;
         public AdventureGameTranslator(Harmony harmony)
         {
-            if (isPatched) return;
+            if (isPatched || componentType == null) return;
             isPatched = true;
             mUpdateStatDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateStatDisplayPostfix(__instance));
             mUpdateInvDisplayPostfix = SymbolExtensions.GetMethodInfo((MonoBehaviour __instance) => UpdateInvDisplayPostfix(__instance));
