@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModuleTranslators\ComplicatedButtonTranslator.cs" />
     <Compile Include="Loaders\SupportLoader.cs" />
     <Compile Include="Mangnifier\Magnifier.cs" />
     <Compile Include="Mangnifier\OrientationCubeMagnifier.cs" />
