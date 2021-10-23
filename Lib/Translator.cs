@@ -42,7 +42,7 @@ namespace TranslationService
             return _dict ??= loader.GetTranslation(langCode);
         }
 
-        public string? GetTranslation(string from, string moduleName)
+        public string? GetTranslation(string from, string moduleName, bool allCaps = false)
         {
             if (LoadTranslations() is not Dictionary<string, string> dict) return null;
             var trimmed = from.Trim();
@@ -50,31 +50,31 @@ namespace TranslationService
             var upper = trimmed.ToUpperInvariant();
             if (dict.TryGetValue(moduleName + ":" +lower, out string to) || dict.TryGetValue(lower, out to))
             {
-                if (trimmed == upper) return to.ToUpperInvariant();
+                if (allCaps || trimmed == upper) return to.ToUpperInvariant();
                 else if (trimmed[0] == upper[0]) return to.Substring(0, 1).ToUpperInvariant() + to.Substring(1).ToLowerInvariant();
                 else return to.ToLowerInvariant();
             }
             return null;
         }
 
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Font? fontOverride = null, bool allCaps = false)
         {
-            SetTranslationToMeshes(textmeshes, module, Magnifier.Default);
+            SetTranslationToMeshes(textmeshes, module, Magnifier.Default, fontOverride, allCaps);
         }
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Magnifier magnifier)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Magnifier magnifier, Font? fontOverride = null, bool allCaps = false)
         {
             foreach (var textMesh in textmeshes)
             {
-                SetTranslationToMesh(textMesh, module, magnifier);
+                SetTranslationToMesh(textMesh, module, magnifier, fontOverride, allCaps);
             }
         }
-        public void SetTranslationToMesh(TextMesh textmesh, KMBombModule module, Magnifier magnifier)
+        public void SetTranslationToMesh(TextMesh textmesh, KMBombModule module, Magnifier magnifier, Font? fontOverride = null, bool allCaps = false)
         {
             MeshRenderer renderer = textmesh.GetComponent<MeshRenderer>();
             Transform transform = textmesh.GetComponent<Transform>();
             string moduleName = module.ModuleDisplayName;
 
-            if (GetTranslation(textmesh.text, moduleName) is string translated)
+            if (GetTranslation(textmesh.text, moduleName, allCaps) is string translated)
             {
 
                 // Changing alignment to center
@@ -86,7 +86,12 @@ namespace TranslationService
                 Vector2 beforeSize = renderer.bounds.size;
 
                 string beforeTranslation = textmesh.text;
-                if (font != null && fontMaterial != null)
+                if (fontOverride != null)
+                {
+                    textmesh.font = fontOverride;
+                    renderer.material = fontOverride.material;
+                }
+                else if (font != null && fontMaterial != null)
                 {
                     textmesh.font = font;
                     renderer.material = fontMaterial;
