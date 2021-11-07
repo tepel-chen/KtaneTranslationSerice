@@ -14,6 +14,7 @@ namespace TranslationService
     {
         internal static Harmony harmony;
         internal static SupportAssign assigner;
+        internal static Translator translator;
         internal static TranslationService service;
 
         public static void Patch()
@@ -99,10 +100,11 @@ namespace TranslationService
             }
             var font = Patcher.service.fonts.TryGetValue(currentLangCode, out Font fontRes) ? fontRes : null;
             var fontMaterial = Patcher.service.fontMaterials.TryGetValue(currentLangCode, out Material matRes) ? matRes : null;
-            var translator = new Translator(logger, font, fontMaterial, settings, currentLangCode);
-            Patcher.assigner = new SupportAssign(logger, translator, settings, Patcher.harmony);
-            yield return translator;
+            Patcher.translator = new Translator(logger, font, fontMaterial, settings, currentLangCode);
+            Patcher.assigner = new SupportAssign(logger, Patcher.translator, settings, Patcher.harmony);
+            yield return Patcher.translator;
             yield return Patcher.assigner;
+            Patcher.service.SetDict(Patcher.translator.LoadTranslations());
             isSetting = false;
         }
 

@@ -125,9 +125,11 @@
     <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\MurderTranslator.cs" />
     <Compile Include="Patch.cs" />
+    <Compile Include="PropertiesBehaviour.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SupportAssign.cs" />
+    <Compile Include="TranslationServiceProperties.cs" />
     <Compile Include="Translator.cs" />
     <Compile Include="GeneralExtensions.cs" />
     <Compile Include="Helpers.cs" />

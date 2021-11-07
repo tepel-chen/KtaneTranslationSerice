@@ -37,7 +37,6 @@ namespace TranslationService.Loaders
                         result.Add(key, translation);
                     }
                 }
-
                 return result;
             }
             logger.Log("Loading translation sheet was unsuccessful");

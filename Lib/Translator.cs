@@ -37,7 +37,7 @@ namespace TranslationService
             loader = new TranslationLoader(logger);
         }
 
-        private Dictionary<string, string>? LoadTranslations()
+        public Dictionary<string, string>? LoadTranslations()
         {
             return _dict ??= loader.GetTranslation(langCode);
         }
