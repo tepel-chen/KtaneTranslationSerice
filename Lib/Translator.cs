@@ -78,8 +78,8 @@ namespace TranslationService
             {
 
                 // Changing alignment to center
-                textmesh.anchor = TextAnchor.MiddleCenter;
                 transform.position = renderer.bounds.center;
+                textmesh.anchor = TextAnchor.MiddleCenter;
 
                 var parent = transform.parent;
                 var rotation = transform.localRotation;
