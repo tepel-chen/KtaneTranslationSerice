@@ -32,17 +32,13 @@ namespace TranslationService.ModuleTranslators
 
         private static readonly Type componentType = ReflectionHelper.FindType("identityParadeScript");
         private static bool isPatched = false;
-        private static Magnifier displayMagnifier(string langCode) => langCode == "ja" ? new Magnifier.VectorMagnifier(0.1f, 0.02f) : new Magnifier.VectorMagnifier(0.1f, 0.013311f);
+        private static Magnifier displayMagnifier(string langCode) => new Magnifier.VectorMagnifier(0.8f, 0.7272f);
 
         public override void StartTranslation(KMBombModule module, Translator translator)
         {
             IdentityParadeTranslator.translator = translator;
             var text = module.GetComponentsInChildren<TextMesh>().First(text => text.text == "CONVICT");
             translator.SetTranslationToMesh(text, module, Magnifier.Default);
-        }
-
-        public override void AwakeTranslation(KMBombModule module, Translator translator)
-        {
             var texts = module.GetComponentsInChildren<TextMesh>().Where(text => text.text != "CONVICT").ToArray();
             translator.SetTranslationToMeshes(texts, module, displayMagnifier(translator.langCode));
         }

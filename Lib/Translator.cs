@@ -81,8 +81,15 @@ namespace TranslationService
                 textmesh.anchor = TextAnchor.MiddleCenter;
                 transform.position = renderer.bounds.center;
 
-                var rotation = transform.rotation;
+                var parent = transform.parent;
+                var rotation = transform.localRotation;
+                var scale = transform.localScale;
+                var position = transform.localPosition;
+
+                transform.parent = null;
                 transform.rotation = Quaternion.identity;
+                transform.position = new Vector3(0, 0, 0);
+                transform.localScale = new Vector3(scale.x, scale.y, 1);
                 Vector2 beforeSize = renderer.bounds.size;
 
                 string beforeTranslation = textmesh.text;
@@ -95,11 +102,11 @@ namespace TranslationService
 
                 Vector2 afterSize = renderer.bounds.size;
                 float m = magnifier.GetMagnifier(beforeSize, afterSize, beforeTranslation, module);
-                transform.localScale *= m;
-                logger.Log((afterSize * 1/module.GetComponent<BombComponent>().Bomb.Scale).ToString("F6"));
                 logger.Log($"Found text \"{beforeTranslation}\" in module {moduleName}. Translating to \"{translated}\"");
-
-                transform.rotation = rotation;
+                transform.parent = parent;
+                transform.localPosition = position;
+                transform.localScale = scale * m;
+                transform.localRotation = rotation;
 
             }
             else if (settings.EnableSuggestionLog && new Regex(@"^[A-Za-z]{2,}$").IsMatch(textmesh.text))
