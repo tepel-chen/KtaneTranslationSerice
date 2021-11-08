@@ -29,7 +29,6 @@ namespace TranslationService.Loaders
                 var result = new Dictionary<string, string>();
                 foreach (var row in rows)
                 {
-                    Debug.Log(row.Keys.Count);
                     if(
                         row.TryGetValue(code, out string translation) && translation.Length > 0 &&
                         row.TryGetValue("Field name", out string field) && field.Length > 0

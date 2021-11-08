@@ -104,7 +104,7 @@ namespace TranslationService
             Patcher.assigner = new SupportAssign(logger, Patcher.translator, settings, Patcher.harmony);
             yield return Patcher.translator;
             yield return Patcher.assigner;
-            Patcher.service.SetDict(Patcher.translator.LoadTranslations());
+            Patcher.service.SetDict(Patcher.translator.LoadTranslations(), currentLangCode);
             isSetting = false;
         }
 
