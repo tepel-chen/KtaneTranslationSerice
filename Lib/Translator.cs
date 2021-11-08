@@ -21,7 +21,7 @@ namespace TranslationService
         public string langCode;
 
         private TranslationLoader loader;
-        private Dictionary<string, string>? _dict;
+        private Dictionary<string, string>? _moduleDict;
 
 
         public override bool keepWaiting => loader.keepWaiting;
@@ -39,16 +39,24 @@ namespace TranslationService
 
         public Dictionary<string, string>? LoadTranslations()
         {
-            return _dict ??= loader.GetTranslation(langCode);
+            return _moduleDict ??= loader.GetTranslation(langCode);
         }
 
-        public string? GetTranslation(string from, string moduleName)
+        public string? GetTranslation(string from, string moduleName, List<string>? categories = null)
         {
-            if (LoadTranslations() is not Dictionary<string, string> dict) return null;
+            var moduleDict = LoadTranslations();
+            if (moduleDict is null) return null;
             var trimmed = from.Trim();
             var lower = trimmed.ToLowerInvariant();
             var upper = trimmed.ToUpperInvariant();
-            if (dict.TryGetValue(moduleName + ":" +lower, out string to) || dict.TryGetValue(lower, out to))
+            if (moduleDict!.TryGetValue(moduleName + ":" +lower, out string to) || moduleDict!.TryGetValue(lower, out to))
+            {
+                if (trimmed == upper) return to.ToUpperInvariant();
+                else if (trimmed[0] == upper[0]) return to.Substring(0, 1).ToUpperInvariant() + to.Substring(1).ToLowerInvariant();
+                else return to.ToLowerInvariant();
+            }
+            var key = categories?.Find(c => moduleDict!.ContainsKey($"<{c}>:{lower}")) ?? "";
+            if (key.Length > 0 && moduleDict!.TryGetValue($"<{key}>:{lower}", out to))
             {
                 if (trimmed == upper) return to.ToUpperInvariant();
                 else if (trimmed[0] == upper[0]) return to.Substring(0, 1).ToUpperInvariant() + to.Substring(1).ToLowerInvariant();
@@ -57,24 +65,24 @@ namespace TranslationService
             return null;
         }
 
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, List<string>? categories = null)
         {
-            SetTranslationToMeshes(textmeshes, module, Magnifier.Default);
+            SetTranslationToMeshes(textmeshes, module, Magnifier.Default, categories);
         }
-        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Magnifier magnifier)
+        public void SetTranslationToMeshes(TextMesh[] textmeshes, KMBombModule module, Magnifier magnifier, List<string>? categories = null)
         {
             foreach (var textMesh in textmeshes)
             {
-                SetTranslationToMesh(textMesh, module, magnifier);
+                SetTranslationToMesh(textMesh, module, magnifier, categories);
             }
         }
-        public void SetTranslationToMesh(TextMesh textmesh, KMBombModule module, Magnifier magnifier)
+        public void SetTranslationToMesh(TextMesh textmesh, KMBombModule module, Magnifier magnifier, List<string>? categories = null)
         {
             MeshRenderer renderer = textmesh.GetComponent<MeshRenderer>();
             Transform transform = textmesh.GetComponent<Transform>();
             string moduleName = module.ModuleDisplayName;
 
-            if (GetTranslation(textmesh.text, moduleName) is string translated)
+            if (GetTranslation(textmesh.text, moduleName, categories) is string translated)
             {
 
                 // Changing alignment to center

@@ -2,6 +2,7 @@
 
 using KeepCoding;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TranslationService.Loaders
@@ -28,12 +29,16 @@ namespace TranslationService.Loaders
                 var result = new Dictionary<string, string>();
                 foreach (var row in rows)
                 {
+                    Debug.Log(row.Keys.Count);
                     if(
                         row.TryGetValue(code, out string translation) && translation.Length > 0 &&
                         row.TryGetValue("Field name", out string field) && field.Length > 0
                     )
                     {
-                        var key = row.TryGetValue("Module name", out string module) && module.Length > 0 ? $"{module}:{field.ToLowerInvariant()}" : field.ToLowerInvariant();
+                        var key = 
+                            row.TryGetValue("Module name", out string module) && module.Length > 0? 
+                            $"{module}:{field.ToLowerInvariant()}" : 
+                            field.ToLowerInvariant();
                         result.Add(key, translation);
                     }
                 }

@@ -2,6 +2,7 @@
 
 using KeepCoding;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TranslationService.Loaders
@@ -22,12 +23,14 @@ namespace TranslationService.Loaders
         public readonly ModuleSupportStatus status;
         public readonly float? wAdjust;
         public readonly float? hAdjust;
+        public readonly List<string>? categories;
 
-        public ModuleSupport(string moduleName, ModuleSupportStatus status, float? wAdjust, float? hAdjust) {
+        public ModuleSupport(string moduleName, ModuleSupportStatus status, float? wAdjust, float? hAdjust, List<string>? categories) {
             this.moduleName = moduleName;
             this.status = status;
             this.wAdjust = wAdjust;
             this.hAdjust = hAdjust;
+            this.categories = categories;
         }
     }
 
@@ -70,7 +73,8 @@ namespace TranslationService.Loaders
                         };
                         float? wAdjust = row.TryGetValue("Width adjustment", out string wstr) && float.TryParse(wstr, out float wvalue) ? wvalue : null;
                         float? hAdjust = row.TryGetValue("Height adjustment", out string hstr) && float.TryParse(hstr, out float hvalue) ? hvalue : null;
-                        supportList.Add(name, new ModuleSupport(name, status, wAdjust, hAdjust));
+                        List<string>? categories = row.TryGetValue("Categories", out string categoryStr) ? categoryStr.Split(',').Select(s => s.Trim()).ToList() : null;
+                        supportList.Add(name, new ModuleSupport(name, status, wAdjust, hAdjust, categories));
                     }
                 }
 

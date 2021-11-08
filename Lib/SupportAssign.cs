@@ -34,25 +34,27 @@ namespace TranslationService
         public void TranslateModule(KMBombModule module, bool isAwake = false)
         {
             var support = loader.GetSupport(module.ModuleDisplayName);
+            var categories = support?.categories;
+
             if (support != null)
             {
                 ModuleTranslator? moduleTranslator = moduleTranslatorCache.TryGetValue(module.ModuleDisplayName, out ModuleTranslator cache) ? cache : null;
                 moduleTranslator ??= (support.status) switch
                 {
-                    ModuleSupportStatus.Default => new OnlyStartModuleTranslator(Default),
-                    ModuleSupportStatus.Adjust => new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f)),
-                    ModuleSupportStatus.Custom => CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t) ? t(harmony) : null,
-                    ModuleSupportStatus.Partial => settings.ApplyToPartial ? new OnlyStartModuleTranslator(Default) : null,
-                    ModuleSupportStatus.PartialAdjust => settings.ApplyToPartial ? new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f)) : null,
-                    _ => settings.ApplyToUntestedModule ? new OnlyStartModuleTranslator(Default) : null,
+                    ModuleSupportStatus.Default => new OnlyStartModuleTranslator(Default, categories),
+                    ModuleSupportStatus.Adjust => new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f), categories),
+                    ModuleSupportStatus.Custom => CustomDictionary.TryGetValue(module.ModuleDisplayName, out var t) ? t(harmony, categories) : null,
+                    ModuleSupportStatus.Partial => settings.ApplyToPartial ? new OnlyStartModuleTranslator(Default, categories) : null,
+                    ModuleSupportStatus.PartialAdjust => settings.ApplyToPartial ? new OnlyStartModuleTranslator(new SizeLimitMagnifier(support.wAdjust ?? 1f, support.hAdjust ?? 1f), categories) : null,
+                    _ => settings.ApplyToUntestedModule ? new OnlyStartModuleTranslator(Default, categories) : null,
                 };
                 if(moduleTranslator == null && support.status == ModuleSupportStatus.Custom)
                 {
                     logger.Log($"Module {module.ModuleDisplayName} is labeled custom, but custom translator not found");
                 }
-                if(settings.ApplyToUntestedModule && CustomDictionary.TryGetValue(module.ModuleDisplayName, out Func<Harmony, ModuleTranslator> t2))
+                if(settings.ApplyToUntestedModule && CustomDictionary.TryGetValue(module.ModuleDisplayName, out var t2))
                 {
-                    moduleTranslator = t2(harmony);
+                    moduleTranslator = t2(harmony, categories);
                 }
                 if(moduleTranslator != null)
                 {
@@ -68,11 +70,11 @@ namespace TranslationService
         }
 
 
-        public readonly static Dictionary<string, Func<Harmony, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, ModuleTranslator>>() {
-            {"Orientation Cube", harmony => new OnlyStartModuleTranslator(new OrientationCubeMagnifier()) },
-            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) },
-            {"Murder", harmony => new MurderTranslator(harmony) },
-            {"Identity Parade", harmony => new IdentityParadeTranslator(harmony) }
+        private readonly static Dictionary<string, Func<Harmony, List<string>?, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, List<string>?,ModuleTranslator>>() {
+            {"Orientation Cube", (harmony, _) => new OnlyStartModuleTranslator(new OrientationCubeMagnifier(), new List<string>()) },
+            {"Adventure Game", (harmony, _) => new AdventureGameTranslator(harmony) },
+            {"Murder", (harmony, _) => new MurderTranslator(harmony) },
+            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) }
         };
     }
 }

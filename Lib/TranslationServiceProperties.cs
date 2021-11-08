@@ -12,8 +12,8 @@ namespace TranslationService
     {
         internal  bool isLoading = true;
         internal IDictionary<string, string>? translationDict;
-        internal IDictionary<string, Material> materials;
-        internal IDictionary<string, Font> fonts;
+        internal IDictionary<string, Material>? materials;
+        internal IDictionary<string, Font>? fonts;
         public TranslationServiceProperties()
         {
             AddProperty("IsLoading", new Property(() => isLoading, null));
