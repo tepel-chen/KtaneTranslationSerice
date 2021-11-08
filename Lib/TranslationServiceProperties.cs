@@ -12,14 +12,16 @@ namespace TranslationService
     {
         internal  bool isLoading = true;
         internal IDictionary<string, string>? translationDict;
-        internal IDictionary<string, Material>? materials;
-        internal IDictionary<string, Font>? fonts;
+        internal Material? fontMaterial;
+        internal Font? font;
+        internal string? langCode;
         public TranslationServiceProperties()
         {
             AddProperty("IsLoading", new Property(() => isLoading, null));
             AddProperty("TranslationDict", new Property(() => translationDict, null));
-            AddProperty("Materials", new Property(() => materials, null));
-            AddProperty("Fonts", new Property(() => fonts, null));
+            AddProperty("FontMaterial", new Property(() => fontMaterial, null));
+            AddProperty("Font", new Property(() => font, null));
+            AddProperty("LangCode", new Property(() => langCode, null));
         }
     }
 }

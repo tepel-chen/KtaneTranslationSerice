@@ -43,10 +43,13 @@ namespace TranslationService
             StartCoroutine(FileWritePatch.SetLanguageCode());
         }
 
-        public void SetDict(Dictionary<string, string> dict)
+        public void SetDict(Dictionary<string, string> dict, string langCode)
         {
             properties.isLoading = false;
             properties.translationDict = dict;
+            properties.font = fonts.TryGetValue(langCode, out var font) ? font : null;
+            properties.fontMaterial = fontMaterials.TryGetValue(langCode, out var fontMaterial) ? fontMaterial : null;
+            properties.langCode = langCode;
         }
         
     }
