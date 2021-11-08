@@ -1,6 +1,7 @@
 ﻿
 using KeepCoding;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -22,6 +23,7 @@ namespace TranslationService
 
         internal Dictionary<string, Font> fonts;
         internal Dictionary<string, Material> fontMaterials;
+        private TranslationServiceProperties properties;
 
         internal readonly KeepCoding.Logger logger = new KeepCoding.Logger("Translation Service");
 
@@ -35,13 +37,16 @@ namespace TranslationService
             { 
                 logger.Log($"Using version: {(ModManager.Instance.InstalledModInfos.Values.First(info => info.ID == "TranslationService").Version)}");
             }
+            var propertyObject = new GameObject("TranslationServiceProperties");
+            propertyObject.transform.parent = gameObject.transform;
+            properties = propertyObject.AddComponent<TranslationServiceProperties>();
             StartCoroutine(FileWritePatch.SetLanguageCode());
         }
 
-        class ModInfo
+        public void SetDict(Dictionary<string, string> dict)
         {
-            [JsonProperty("version")]
-            internal string version;
+            properties.isLoading = false;
+            properties.translationDict = dict;
         }
         
     }
