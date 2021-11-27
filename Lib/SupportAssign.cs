@@ -77,7 +77,9 @@ namespace TranslationService
             {"Complicated Buttons", harmony => new ComplicatedButtonTranslator(harmony) },
             {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) },
             {"Poetry", (harmony, _) => new PoetryTranslator(harmony) },
-            {"Poker", (harmony, _) => new PokerTranslator(harmony) }
+            {"Poker", (harmony, _) => new PokerTranslator(harmony) },
+            {"Poker", (harmony, _) => new PokerTranslator(harmony) },
+            {"Laundry", (harmony, _) => new LaundryTranslator(harmony) }
         };
     }
 }

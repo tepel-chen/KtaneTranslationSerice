@@ -131,6 +131,7 @@
     <Compile Include="Loaders\GoogleSheet.cs" />
     <Compile Include="ModuleTranslators\AdventureGameTranslator.cs" />
     <Compile Include="ModuleTranslators\IdentityParadeTranslator.cs" />
+    <Compile Include="ModuleTranslators\LaundryTranslator.cs" />
     <Compile Include="ModuleTranslators\ModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\MurderTranslator.cs" />
