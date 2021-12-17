@@ -74,7 +74,8 @@ namespace TranslationService
             {"Orientation Cube", (harmony, _) => new OnlyStartModuleTranslator(new OrientationCubeMagnifier(), new List<string>()) },
             {"Adventure Game", (harmony, _) => new AdventureGameTranslator(harmony) },
             {"Murder", (harmony, _) => new MurderTranslator(harmony) },
-            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) }
+            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) },
+            {"Laundry", (harmony, _) => new LaundryTranslator(harmony) }
         };
     }
 }
