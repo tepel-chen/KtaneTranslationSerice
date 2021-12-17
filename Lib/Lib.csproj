@@ -133,6 +133,7 @@
     <Compile Include="ModuleTranslators\ModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\OnlyStartModuleTranslator.cs" />
     <Compile Include="ModuleTranslators\MurderTranslator.cs" />
+    <Compile Include="ModuleTranslators\PokerTranslator.cs" />
     <Compile Include="Patch.cs" />
     <Compile Include="PropertiesBehaviour.cs" />
     <Compile Include="ReflectionHelper.cs" />
