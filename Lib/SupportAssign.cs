@@ -75,6 +75,7 @@ namespace TranslationService
             {"Adventure Game", harmony => new AdventureGameTranslator(harmony) },
             {"Murder", harmony => new MurderTranslator(harmony) },
             {"Complicated Buttons", harmony => new ComplicatedButtonTranslator(harmony) },
-            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) }
+            {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) },
+            {"Poetry", (harmony, _) => new PoetryTranslator(harmony) }
     }
 }
