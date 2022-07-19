@@ -42,7 +42,7 @@ namespace TranslationService
             public VectorMagnifier(float x, float y) { vec = new Vector2(x, y); }
             public override float GetMagnifier(Vector2 _, Vector2 afterBounds, string text, KMBombModule module)
             {
-                var svec = vec * module.GetComponent<BombComponent>().Bomb.Scale;
+                var svec = vec;
                 return new float[] { svec.x / afterBounds.x, svec.y / afterBounds.y }.Min();
             }
         }
