@@ -70,15 +70,15 @@ namespace TranslationService
         }
 
 
-        public readonly static Dictionary<string, Func<Harmony, ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, ModuleTranslator>>() {
-            {"Orientation Cube", harmony => new OnlyStartModuleTranslator(new OrientationCubeMagnifier()) },
-            {"Adventure Game", harmony => new AdventureGameTranslator(harmony) },
-            {"Murder", harmony => new MurderTranslator(harmony) },
-            {"Complicated Buttons", harmony => new ComplicatedButtonTranslator(harmony) },
+        public readonly static Dictionary<string, Func<Harmony,List<string> , ModuleTranslator>> CustomDictionary = new Dictionary<string, Func<Harmony, List<string>, ModuleTranslator>>() {
+            {"Orientation Cube", (harmony, _)  => new OnlyStartModuleTranslator(new OrientationCubeMagnifier(), new List<string>()) },
+            {"Adventure Game", (harmony, _)  => new AdventureGameTranslator(harmony) },
+            {"Murder", (harmony, _) => new MurderTranslator(harmony) },
+            {"Complicated Buttons", (harmony, _) => new ComplicatedButtonTranslator(harmony) },
             {"Identity Parade", (harmony, _) => new IdentityParadeTranslator(harmony) },
             {"Poetry", (harmony, _) => new PoetryTranslator(harmony) },
             {"Poker", (harmony, _) => new PokerTranslator(harmony) },
-            {"Laundry", (harmony, _) => new LaundryTranslator(harmony) },
+            // {"Laundry", (harmony, _) => new LaundryTranslator(harmony) },
             {"Two Bits", (harmony, _) => new TwoBitsTranslator(harmony) },
         };
     }
